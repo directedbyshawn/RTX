@@ -50,7 +50,8 @@ expYear = ""
 vpnEmail = ""
 vpnPass = ""
 settings = ""
-rtxCardLink = "https://www.newegg.com/asus-geforce-rtx-3060-ti-dual-rtx3060ti-o8g/p/N82E16814126468?Description=3060%20ti&cm_re=3060_ti-_-14-126-468-_-Product"
+#rtxCardLink = "https://www.newegg.com/asus-geforce-rtx-3060-ti-dual-rtx3060ti-o8g/p/N82E16814126468?Description=3060%20ti&cm_re=3060_ti-_-14-126-468-_-Product"
+rtxCardLink = "https://www.newegg.com/asus-radeon-rx-570-rog-strix-rx570-o8g-gaming/p/N82E16814126427?Item=N82E16814126427"
 
 def main():
 
@@ -165,7 +166,13 @@ def main():
             time.sleep(1)
             browserNewEgg.goto(rtxCardLink)
 
-            time.sleep(2)
+            time.sleep(12)
+
+            #closes pop up
+            if (browserNewEgg.link(id = 'popup-close').exists):
+                browserNewEgg.link(id = 'popup-close').click()
+
+            wait(2)
 
         else:
             pass
@@ -173,7 +180,8 @@ def main():
         browserNewEgg.refresh()
         wait(3)
 
-        condition = not browserNewEgg.button(title="Auto Notify ").exists
+        locator = {"class": "nav-col", "index": 1}
+        condition = (browserNewEgg.div(class_name = "product-buy").div().div(**locator).button()).exists
 
         '''
         x = datetime.datetime.now()
@@ -193,18 +201,33 @@ def main():
 
     time.sleep(1)
 
-    #sets sorting to lowest price to highest
-    locator = {"index": 0}
-    browserNewEgg.select_list(**locator).select_value("1")
+    #clicks add to cart
+    browserNewEgg.div(class_name = "product-buy").div().div(**locator).button().click()
 
-    time.sleep(1)
+    time.sleep(2)
 
-    #clicks on the first (cheapest) option
-    locator = {"class": "item-title", "index": 1}
-    browserNewEgg.link(**locator).click()
+    #declines warrenty if it is presented
+    if (not (browserNewEgg.div(class_name = "item-summary").exists)):
+        locator = {"index": 0}
+        browserNewEgg.div(class_name = "modal-footer").button(**locator).click()
 
-    print("done!")
-    time.sleep(10)
+    time.sleep(2)
+
+    #clicks view cart and checkout
+    browserNewEgg.button(title = "View Cart & Checkout").click()
+
+    wait(5)
+
+    #says no to masks if asked
+    if (browserNewEgg.button(id = "Masks_addtocart").exists):
+        locator = {"index": 0}
+        locator2 = {"index": 1}
+        browserNewEgg.div(class_name = "modal-footer").div(**locator2).button(**locator).click()
+
+    time.sleep(2)
+
+    #goes to secure checkout
+    browserNewEgg.div(class_name = "summary-actions").button().click()
 
 
 #-----------------------------------------------------------------------
