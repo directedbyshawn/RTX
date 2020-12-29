@@ -8,6 +8,6 @@ pip install nerodia
 pip install nordvpn_connect
 pip install hashlib
 
-download chrome web driver from https://chromedriver.chromium.org/downloads and add chromedriver.exe to PATH
+download chrome web driver from https://chromedriver.chromium.org/downloads and add chromedriver.exe to PATH, as well as putting it in your python scripts folder
 
 then u good enjoy get them cards, keep scorin
