@@ -2,7 +2,7 @@
 
     This script watches newegg until restock and then
     purchases selected card. Make sure to remove nordvpn
-    code if you do not use nordvpn.
+    code if you do not intend to use a vpn.
 
     ---------------------------------------------------
     ---------------------------------------------------
@@ -29,7 +29,6 @@ from nerodia.browser import Browser
 from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
 
-#globals
 options = Options()
 driver = ""
 browserNewEgg = ""
@@ -50,12 +49,10 @@ expYear = ""
 vpnEmail = ""
 vpnPass = ""
 settings = ""
-#rtxCardLink = "https://www.newegg.com/asus-geforce-rtx-3060-ti-dual-rtx3060ti-o8g/p/N82E16814126468?Description=3060%20ti&cm_re=3060_ti-_-14-126-468-_-Product"
 rtxCardLink = "https://www.newegg.com/asus-radeon-rx-570-rog-strix-rx570-o8g-gaming/p/N82E16814126427?Item=N82E16814126427"
 
 def main():
 
-    #globals
     global browserTwitter, browserNewEgg, username, password, driver, options, rtxCardLink
 
     options.add_argument("--log-level=3")
@@ -100,9 +97,12 @@ def main():
     time.sleep(3)
 
     print("Loading vpn...")
+
+    '''
     vpnStart()
 
     time.sleep(12)
+    '''
 
     print("Connected to VPN!")
 
@@ -116,7 +116,15 @@ def main():
 
     driver = webdriver.Chrome(options=options)
     browserNewEgg = Browser(browser=driver)
+
+    time.sleep(4)
+
     browserNewEgg.goto(rtxCardLink)
+
+    wait(1)
+
+    #clears browser cache
+    browserNewEgg.cookies.clear()
 
     wait(9)
 
@@ -129,7 +137,7 @@ def main():
     x = datetime.datetime.now()
     y = x + datetime.timedelta(seconds=120)
 
-    #checks new egg until restock
+    #checks newegg until restock
     restocked = False
     count = 0
     while restocked == False:
@@ -148,6 +156,7 @@ def main():
 
             #closes browser
             browserNewEgg.close()
+
 
             time.sleep(1)
 
@@ -183,10 +192,8 @@ def main():
         locator = {"class": "nav-col", "index": 1}
         condition = (browserNewEgg.div(class_name = "product-buy").div().div(**locator).button()).exists
 
-        '''
         x = datetime.datetime.now()
         condition = x > y
-        '''
 
         if (condition):
             restocked = True
@@ -228,9 +235,6 @@ def main():
 
     #goes to secure checkout
     browserNewEgg.div(class_name = "summary-actions").button().click()
-
-
-#-----------------------------------------------------------------------
 
 def login():
 
@@ -274,8 +278,6 @@ def login():
             goodLogin = True
         else:
             goodLogin = False
-
-#-----------------------------------------------------------------------
 
 def loadPersonalInformation():
 
@@ -331,8 +333,6 @@ def loadPersonalInformation():
 
     file.close()
 
-#-----------------------------------------------------------------------
-
 def sha256(var):
 
 	#Return the SHA-256 hash of the string var
@@ -345,16 +345,12 @@ def sha256(var):
 
 	return hash_obj.hexdigest()
 
-#-----------------------------------------------------------------------
-
 def clear_console(n):
 
     print("")
     for i in range(n):
         print("-----------------------------------------------")
     print("")
-
-#-----------------------------------------------------------------------
 
 def encode(key, string):
 
@@ -367,8 +363,6 @@ def encode(key, string):
     encoded_string = encoded_string.encode('latin') if six.PY3 else encoded_string
     return base64.urlsafe_b64encode(encoded_string).rstrip(b'=')
 
-#-----------------------------------------------------------------------
-
 def decode(key, string):
 
     string = base64.urlsafe_b64decode(string + b'===')
@@ -380,8 +374,6 @@ def decode(key, string):
         encoded_chars.append(encoded_c)
     encoded_string = ''.join(encoded_chars)
     return encoded_string
-
-#-----------------------------------------------------------------------
 
 def printPersonalInfo():
 
@@ -400,15 +392,11 @@ def printPersonalInfo():
     print("Experation Month: " + expMonth)
     print("Experation Year: " + expYear)
 
-#-----------------------------------------------------------------------
-
 def wait(seconds):
     if seconds < 2:
         time.sleep(1)
     else:
         time.sleep(random.randint(seconds-1, seconds+1))
-
-#-----------------------------------------------------------------------
 
 def vpnStart():
 
@@ -421,8 +409,6 @@ def vpnStart():
     #connects to vpn
     rotate_VPN(settings)
 
-#-----------------------------------------------------------------------
-
 def vpnEnd():
 
     #globals
@@ -434,6 +420,5 @@ def vpnEnd():
     #disconnects from vpn
     close_vpn_connection(settings)
 
-#-----------------------------------------------------------------------
-
-main()
+if __name__ == "__main__":
+    main()
