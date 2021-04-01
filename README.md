@@ -6,7 +6,7 @@ code is currently not working and will likely never be fixed by me as this was c
 
 not written to purchase different cards or to use different websites, however the code is very simple and can easily be modified to do so.
 
-pip install nerodia, nordvpn_connect
+pip install -r requirements.txt
 
 *if you dont want to use nord, go ahead and remove the nordvpn_connect code
 
