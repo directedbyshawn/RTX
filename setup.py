@@ -27,7 +27,6 @@
 
 import time, random, os, hashlib, base64, six
 
-#globals
 username = ""
 password = ""
 firstName = ""
@@ -47,7 +46,6 @@ vpnPass = ""
 
 def main():
 
-    #globals
     global username, password, firstName, lastName, address, city, state, zip, phone, email, cardHolderName, cardNumber, expMonth, expYear, vpnEmail, vpnPass
 
     time.sleep(2)
@@ -164,8 +162,6 @@ def main():
 
     print("Come again!")
 
-#-----------------------------------------------------------------------
-
 def sha256(var):
 	"""Return the SHA-256 hash of the string var."""
 
@@ -177,15 +173,11 @@ def sha256(var):
 
 	return hash_obj.hexdigest()
 
-#-----------------------------------------------------------------------
-
 def clear_console(n):
     print("")
     for i in range(n):
         print("-----------------------------------------------")
     print("")
-
-#-----------------------------------------------------------------------
 
 def encode(key, string):
     encoded_chars = []
@@ -196,8 +188,6 @@ def encode(key, string):
     encoded_string = ''.join(encoded_chars)
     encoded_string = encoded_string.encode('latin') if six.PY3 else encoded_string
     return base64.urlsafe_b64encode(encoded_string).rstrip(b'=')
-
-#-----------------------------------------------------------------------
 
 def decode(key, string):
     string = base64.urlsafe_b64decode(string + b'===')
@@ -210,8 +200,6 @@ def decode(key, string):
     encoded_string = ''.join(encoded_chars)
     return encoded_string
 
-#-----------------------------------------------------------------------
-
 def decryption_test():
 
     file = open("credentials/shawn.txt", "r")
@@ -219,7 +207,7 @@ def decryption_test():
 
     password = input("Password: ")
 
-    '''
+
     goodPass = False
     while (goodPass == False):
         password = input("Enter the password: ")
@@ -227,7 +215,7 @@ def decryption_test():
             print("ERROR: Wrong password entered")
         else:
             goodPass = True
-    '''
+
 
     encryptedFirstName = (file.readline().rstrip())
     decryptedFirstName = (decode(password, encryptedFirstName.encode("utf-8")))
@@ -249,6 +237,5 @@ def decryption_test():
 
     print("City: " + decryptedCity)
 
-#-----------------------------------------------------------------------
-
-main()
+if __name__ == "__main__":
+    main()
