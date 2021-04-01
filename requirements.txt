@@ -1,0 +1,2 @@
+nerodia==0.14.1
+nordvpn_connect==0.0.7
